@@ -2,6 +2,19 @@
 
 int two_sum(const int* nums, int n, int target, int* out_i, int* out_j) {
 
+    for(int i = 0; i < n; i++){
+        int pair = target - nums[i];
+        for(int j = i+1; j<n;j++){
+            if(nums[j] == pair){
+                *out_i = i;
+                *out_j = j;
+                return 1;
+                
+            }
+        }
+    }
+    return 0;
+
     // TODO: implement Two Sum.
     // Requirements:
     //  - find i < j such that nums[i] + nums[j] == target

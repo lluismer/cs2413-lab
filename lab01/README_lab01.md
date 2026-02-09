@@ -125,7 +125,7 @@ Same meaning as the unsorted version:
 - return `1` if found, otherwise return `0`
 
 ### Hint (two pointers)
-- Start `i = 0` and `j = n - 1`
+- Start `i = 0` and `j = n -
 - If `nums[i] + nums[j]` is too small → move `i` right (`i++`)
 - If too large → move `j` left (`j--`)
 

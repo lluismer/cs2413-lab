@@ -27,7 +27,24 @@
 
 int* plusOne(int* digits, int digitsSize, int* returnSize) {
     // TODO: implement
+	int* out = (int*)malloc((digitsSize + 1) * sizeof(int));
+    	int carry = 1;
 
+    	for (int i = digitsSize - 1; i >= 0; --i) {
+        	int sum = digits[i] + carry;
+        	out[i + 1] = sum % 10;
+        	carry = sum / 10;
+    	}
+
+    	if (carry) {
+        	out[0] = 1;
+        	*returnSize = digitsSize + 1;
+        	return out;
+    	}
+
+    	for (int i = 0; i < digitsSize; ++i) out[i] = out[i + 1];
+    	*returnSize = digitsSize;
+    	return out;
     
 }
 

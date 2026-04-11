@@ -64,8 +64,27 @@ whose sum equals target.
 */
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     /* Write your code here */
+    Node* table[TABLE_SIZE] = {NULL};
+    int* result = (int*)malloc(2 * sizeof(int));
+
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        int foundIndex;
+
+        if (find(table, complement, &foundIndex)) {
+            result[0] = foundIndex;
+            result[1] = i;
+            *returnSize = 2;
+            freeTable(table);
+            return result;
+        }
+
+        insert(table, nums[i], i);
+    }
 
     *returnSize = 0;
+    free(result);
+    freeTable(table);
     return NULL;
 }
 
@@ -74,7 +93,8 @@ Optional helper: compute a hash index for a key.
 */
 static int hash(int key) {
     /* Write your code here if you use this helper */
-    return 0;
+    if (key < 0) key = -key;
+    return key % TABLE_SIZE;
 }
 
 /*
@@ -82,6 +102,12 @@ Optional helper: insert (key, value) into the hash table.
 */
 static void insert(Node* table[], int key, int value) {
     /* Write your code here if you use this helper */
+    int idx = hash(key);
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->key   = key;
+    newNode->value = value;
+    newNode->next  = table[idx];
+    table[idx]     = newNode;
 }
 
 /*
@@ -91,6 +117,16 @@ Otherwise return 0.
 */
 static int find(Node* table[], int key, int* value) {
     /* Write your code here if you use this helper */
+    int idx = hash(key);
+    Node* cur = table[idx];
+
+    while (cur != NULL) {
+        if (cur->key == key) {
+            *value = cur->value;
+            return 1;
+        }
+        cur = cur->next;
+    }
     return 0;
 }
 
@@ -99,4 +135,12 @@ Optional helper: free all memory used by the hash table.
 */
 static void freeTable(Node* table[]) {
     /* Write your code here if you use this helper */
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        Node* cur = table[i];
+        while (cur != NULL) {
+            Node* tmp = cur;
+            cur = cur->next;
+            free(tmp);
+        }
+    }
 }
